@@ -33,7 +33,7 @@ Here's the [official instruction](https://core.telegram.org/bots/tutorial) ("Get
 Here's the short version:
 1. In telegram client, go to @BotFather
 2. Enter command **/newbot** and follow intructions
-3. You'll get a **BOT_TOKEN** that'd look something like this - `1234567890:ABCD1E2EFgHI3jPMC7k6lfsD34DM34T9tTrlA`. Save it with all other secrets.
+3. You'll get a **BOT_TOKEN** that'd look something like this - `1234567890:ABCD1E2EFgHI3jPMC7k6lfsD33ZNuTZhHTrlA`. Save it with all other secrets.
 
 ### Option 1 - Use script from CLI
 
@@ -43,7 +43,7 @@ git clone https://github.com/BoopyTheFox/TGAmnesia/
 cd TGAmnesia/app
 ```
 
-2. Create python virtual environment and install dependencies:
+2. Create python virtual environment and install dependencies in it:
 ```bash
 mkdir venv
 python -m venv venv
@@ -51,12 +51,12 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Go through authentication - put in secrets, obtained earlier:
+3. Go through authentication - put in secrets, obtained earlier, and then 2fa code + your tg password, if set.
 
 *(tip: if you don't want your secrets to save in shell history, put a space in beginning of your command!)*
 ```bash
-python3 TGAmnesia_core.py --auth $api_id $api_hash $phone_number
-python3 TGAmnesia_core.py --auth-2fa $auth_code
+python3 TGAmnesia_core.py --auth $api_id $api_hash $your_phone_number
+python3 TGAmnesia_core.py --auth-2fa $auth_code $password
 ```
 
 Now you can use it!
