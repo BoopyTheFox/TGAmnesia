@@ -1,7 +1,8 @@
 # Telegram Amnesia
 
-## What it's for?
-**TGAmnesia** is a simple tool to bulk-remove your own messages from telegram groups
+**TGAmnesia** is a simple tool to bulk-remove your own messages from select telegram groups.
+
+It can be used either on it's own, or through telegram bot as a wrapper. It is also dockerized.
 
 ## Dependencies
 Either just have **docker**, or:
@@ -11,7 +12,7 @@ Required -
 - Telethon - to interact with Telegram Client API (Also referred to as "MTProto API")
 - python-dotenv - to store authentication data
 
-Optional (if you want to schedule deletion within regular intervals) -
+Optional (if you want to automate it within regular intervals) -
 - Cron service (tested on Debian's "cron" and Arch's "cronie")
 - python-crontab
 
@@ -20,15 +21,23 @@ Optional (if you want to schedule deletion within regular intervals) -
 ### Create your "app"
 Here's the [official instruction](https://core.telegram.org/api/obtaining_api_id)
 
-Here's short version:
+Here's the short version:
 1. Go to my.telegram.org
 2. Auth with your phone number
 3. Go to "API management tool" and fill out necessary fields 
 4. Obtain your secrets - copy **api_id**, **api_hash**, and store them securely.
 
+### (If needed) Create your "bot"
+Here's the [official instruction](https://core.telegram.org/bots/tutorial) ("Getting Ready" section)
+
+Here's the short version:
+1. In telegram client, go to @BotFather
+2. Enter command **/newbot** and follow intructions
+3. You'll get a **BOT_TOKEN** that'd look something like this - `1234567890:ABCD1E2EFgHI3jPMC7k6lfsD34DM34T9tTrlA`. Save it with all other secrets.
+
 ### Option 1 - Use script from CLI
 
-1. Clone the repo and go into it:
+1. Clone the repo:
 ```bash
 git clone https://github.com/BoopyTheFox/TGAmnesia/
 cd TGAmnesia/app
@@ -42,7 +51,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Go through authentication, putting in secrets, obtained earlier:
+3. Go through authentication - put in secrets, obtained earlier:
 
 *(tip: if you don't want your secrets to save in shell history, put a space in beginning of your command!)*
 ```bash
@@ -102,13 +111,7 @@ python3 TGAmnesia_schedule.py --rm-job $part_of_a_group_name
 ### Option 2 - Use it through Telegram Bot
 You can use telegram bot as a wrapper:
 
-#### 1. Create your bot
-In case you're not familiar with procedure of creating a bot on telegram:
-1. In telegram client, go to @BotFather
-2. Enter command **/newbot** and follow intructions
-3. You'll get a **BOT_TOKEN** that'd look something like this - `1234567890:ABCD1E2EFgHI3jPMC7k6lfsD34DM34T9tTrlA`. Save it with all other secrets.
-
-#### 2. Initialize your bot
+#### 1. Initialize your bot
 First 3 steps are same as above, in "Option 1 - Use script from CLI".
 
 Then do this:
@@ -118,7 +121,7 @@ Then do this:
 python3 TGAmnesia_bot.py --init $your_user_name $api_id $api_hash $bot_token
 ```
 
-#### 3. Use your bot
+#### 2. Use your bot
 In your telegram bot:
 On /start, you'll get authentication instructions.
 On /help, you can read them again, and see all other commands.
@@ -132,7 +135,7 @@ On /help, you can read them again, and see all other commands.
 As of May 2024, telegram support leaves NO FEEDBACK AT ALL (even though they do review and resolve user's tickets), so don't get discouraged if you won't receive any.
 
 As telegram [officially states](https://core.telegram.org/api/obtaining_api_id) (at least on May 2024):
-> Due to excessive abuse of the Telegram API, **all accounts** that sign up or log in using unofficial Telegram API clients are automatically put **under observation** to avoid violations of the [Terms of Service](https://core.telegram.org/api/terms)"
+> Due to excessive abuse of the Telegram API, **all accounts** that sign up or log in using unofficial Telegram API clients are automatically put **under observation** to avoid violations of the [Terms of Service](https://core.telegram.org/api/terms)
 
 Also, telegram anti-fraud is heavily automated (as it should be), and unless you do some precautions, it **will** do the following things:
 - **Force de-auth** your account from all sessions
