@@ -142,11 +142,13 @@ async def group_show_command(event):
 @bot.on(events.NewMessage(pattern='/group_purge( .+)?'))
 async def group_purge_command(event):
     if event.pattern_match.group(1) is None:
-        await event.respond("Usage: /group_purge <group_name>")
+        await event.respond("Usage: /group_purge <group_name> [message_pattern]")
     else:
         await event.respond("Purging messages...")
-        group_partial_name = event.pattern_match.group(1).strip()
-        await run_and_return(event, TGAmnesia_core.group_purge, group_partial_name)
+        args = event.pattern_match.group(1).strip().split(' ', 1)
+        group_partial_name = args[0]
+        message_pattern = args[1] if len(args) > 1 else None
+        await run_and_return(event, TGAmnesia_core.group_purge, group_partial_name, message_pattern)
 
 
 @bot.on(events.NewMessage(pattern='/group_dump( .+)?'))

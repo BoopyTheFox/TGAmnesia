@@ -210,7 +210,7 @@ async def group_show(group_partial_name):
 #            print(f"Reactions from you: {reactions_from_you}")
 
 
-async def group_purge(group_partial_name, quiet=False):
+async def group_purge(group_partial_name, message_pattern=None, quiet=False):
     global client
     if client is None:
         client = TelegramClient('tg_amnesia', API_ID, API_HASH)
@@ -230,21 +230,24 @@ async def group_purge(group_partial_name, quiet=False):
     for dialog in groups:
         entity = await client.get_entity(dialog)
         user_id = (await client.get_me()).id
-        
+
         print(f"Started purging messages from group: {dialog.id} - {dialog.name}")
         spinner = itertools.cycle(['|', '/', '-', '\\'])
         async for message in client.iter_messages(entity, from_user=user_id):
+            # If message_pattern is provided, skip messages that not match it
+            if message_pattern and not re.search(message_pattern, message.text or ''):
+                continue
+
             await client.delete_messages(entity, message)
             if not quiet:
                 sys.stdout.write(next(spinner))  # write the next character
                 sys.stdout.flush()               # flush stdout buffer (actual character display)
                 sys.stdout.write('\b')           # erase the last written char
-        
-        msg += f"Successfully purged messages from group: {dialog.id} - {dialog.name}"
+
+        msg += f"Successfully purged messages from group: {dialog.id} - {dialog.name}\n"
         print(f"Successfully purged messages from group: {dialog.id} - {dialog.name}")
-        return msg
-
-
+    
+    return msg
 async def group_dump(group_partial_name, send=False):
     global client
     if client is None:
