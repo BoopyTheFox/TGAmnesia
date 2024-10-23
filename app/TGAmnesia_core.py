@@ -114,10 +114,13 @@ async def group_list():
     if client is None:
         client = TelegramClient('tg_amnesia', API_ID, API_HASH)
         await client.start()
+
+    group_list = []
     async for dialog in client.iter_dialogs():
         if dialog.is_group:
             msg = f"{dialog.id}\t{dialog.name}"
             print(msg)
+            group_messages.append
             return msg
 
 
@@ -372,10 +375,6 @@ async def main():
 
     args = parser.parse_args()
 
-    if not API_ID or not API_HASH or not PHONE_NUMBER:
-        print("User not found, do `--auth [api_id] [api_hash] [phone_number]`")
-        return
-
     if args.auth:
         api_id, api_hash, phone_number = args.auth
         await auth(api_id, api_hash, phone_number)
@@ -409,6 +408,10 @@ async def main():
         await group_purge(args.group_purge, args.quiet)
         return
     else:
+        return
+
+    if not API_ID or not API_HASH or not PHONE_NUMBER:
+        print("User not found, do `--auth [api_id] [api_hash] [phone_number]`")
         return
 
 if __name__ == "__main__":
