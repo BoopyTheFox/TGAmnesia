@@ -118,10 +118,11 @@ async def group_list():
     group_list = []
     async for dialog in client.iter_dialogs():
         if dialog.is_group:
-            msg = f"{dialog.id}\t{dialog.name}"
-            print(msg)
-            group_messages.append
-            return msg
+            group_name = f"{dialog.id}\t{dialog.name}"
+            print(group_name)
+            group_list.append(group_name)
+    
+    return group_list
 
 
 async def group_show(group_partial_name):
