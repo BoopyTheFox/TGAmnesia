@@ -253,6 +253,8 @@ async def group_purge(group_partial_name, message_pattern=None, quiet=False):
         print(f"Successfully purged messages from group: {dialog.id} - {dialog.name}")
     
     return msg
+
+
 async def group_dump(group_partial_name, send=False):
     global client
     if client is None:
@@ -372,7 +374,7 @@ async def main():
     #parser.add_argument('--group-show-reactions', type=str, help='Show group reactions information for given partial group name')
     parser.add_argument('--group-dump', metavar='GROUP_NAME', help='Dump specified group(s) messages into a file, or [--send] to telegram')
     parser.add_argument('--send', action='store_true', help=argparse.SUPPRESS)
-    parser.add_argument('--group-purge', metavar='GROUP_NAME', help='Purge specified group(s) messages')
+    parser.add_argument('--group-purge', nargs='+', metavar=('GROUP_NAME', 'PATTERN'), help='Purge specified group(s) messages')
     parser.add_argument('--quiet', action='store_true', help=argparse.SUPPRESS)
 
     args = parser.parse_args()
@@ -407,7 +409,10 @@ async def main():
         await group_dump(args.group_dump, send=args.send)
         return
     elif args.group_purge:
-        await group_purge(args.group_purge, args.quiet)
+        group_name = args.group_purge[0]
+        pattern = ' '.join(args.group_purge[1:]) if len(args.group_purge) > 1 else None
+        quiet = args.quiet
+        await group_purge(group_name, message_pattern=pattern, quiet=quiet)
         return
     else:
         return
