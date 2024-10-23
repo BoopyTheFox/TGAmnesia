@@ -59,7 +59,7 @@ async def auth_2fa(code, password=None):
         with open("phone_code_hash.txt", "r") as file:
             phone_code_hash = file.read().strip()
         await client.sign_in(PHONE_NUMBER, code, phone_code_hash=phone_code_hash)
-        msg = "Telegram Amnesia authenticated and works\\nDO NOT FORGET TO TAP 'Yes, it is me!' BUTTON ON YOUR PHONE (it'll appear in a minute or so)\nIf you don't, your account might be FLAGGED AS COMPROMISED by Telegram, and you'll need to re-auth, but also link mail and all that stuff"
+        msg = "Telegram Amnesia authenticated and works\n\nDO NOT FORGET TO TAP 'Yes, it is me!' BUTTON ON YOUR PHONE (it'll appear in a minute or so)\nIf you don't, your account might be FLAGGED AS COMPROMISED by Telegram, and you'll need to re-auth, but also link mail and all that stuff"
         await client.send_message('me', msg) 
         print(msg)
         # Remove the file after successful authentication
